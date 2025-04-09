@@ -1,0 +1,11 @@
+{
+  "name": "game-of-life",
+  "version": "1.0.0",
+  "description": "I just copied and paste this from internet c:",
+  "main": "index.html",
+  "scripts": {
+    "test": "test"
+  },
+  "author": "RicardoA",
+  "license": "ISC"
+}
