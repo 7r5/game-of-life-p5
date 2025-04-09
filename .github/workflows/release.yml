@@ -31,10 +31,10 @@ jobs:
         run: |
           docker run -d -p 80:80 p5-python-server
 
-      # Step 5: Push Docker image to Docker Hub (si tienes un repositorio de Docker Hub)
-      #- name: Push Docker image to Docker Hub
-      # if: github.event_name == 'push' # Solo hacer push cuando sea un commit, no un PR
-      #run: |
-      # docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
-      #docker tag p5-python-server ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
-      #docker push ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
+      # Step 5: Push Docker image to Docker Hub (usando el token)
+      - name: Push Docker image to Docker Hub
+        if: github.event_name == 'push' # Solo hacer push cuando sea un commit, no un PR
+        run: |
+          docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_TOKEN }}
+          docker tag p5-python-server ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
