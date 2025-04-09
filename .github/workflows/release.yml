@@ -1,0 +1,42 @@
+name: Build and Deploy Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      # Step 2: Set up Docker Buildx (para la construcción multiarquitectura si es necesario)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
+
+      # Step 3: Build Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t p5-python-server .
+
+      # Step 4: Run Docker container (opcional, para pruebas)
+      - name: Run Docker container
+        run: |
+          docker run -d -p 80:80 p5-python-server
+
+      # Step 5: Push Docker image to Docker Hub (usando el token)
+      - name: Push Docker image to Docker Hub
+        if: github.event_name == 'push'  # Solo hacer push cuando sea un commit, no un PR
+        run: |
+          echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
+          docker tag p5-python-server ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
+          docker push ${{ secrets.DOCKER_USERNAME }}/p5-python-server:latest
+
+          
