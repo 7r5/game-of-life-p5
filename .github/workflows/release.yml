@@ -33,7 +33,7 @@ jobs:
         run: |
           docker build -t p5-python-server .
 
-      # Step 5: Run Docker container (opcional, para pruebas)
+      # Step 5: Run Docker container (opcional, para pruebas) 
       - name: Run Docker container
         run: |
           docker run -d -p 80:80 p5-python-server
